@@ -2,7 +2,7 @@ id: ruoyi-quartz-rce
 
 info:
   name: RuoYi OA System Quartz RCE
-  author: security-researcher
+  author: moonsec
   severity: critical
   description: |
     RuoYi Management System v4.8.2 and below contains a Remote Code Execution (RCE)

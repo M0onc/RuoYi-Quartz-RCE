@@ -8,6 +8,7 @@
 **Severity:** Critical (CVSS 3.1: 9.8)  
 **Vendor:** RuoYi (若依)  
 **Vendor URL:** https://github.com/yangzongzhuan/RuoYi  
+**Discovered by:** moonsec  
 
 ## Description
 
@@ -44,7 +45,7 @@ id: ruoyi-quartz-rce
 
 info:
   name: RuoYi OA System Quartz RCE
-  author: security-researcher
+  author: moonsec
   severity: critical
   description: |
     RuoYi Management System v4.8.2 and below contains a Remote Code Execution (RCE)
@@ -188,8 +189,8 @@ Successful exploitation of this vulnerability allows an attacker to:
 
 ## Credits
 
-- **Discovered by:** Security Researcher
-- **Nuclei Template:** Community contribution
+- **Discovered by:** moonsec
+- **Nuclei Template:** moonsec
 
 ## Disclaimer
 
