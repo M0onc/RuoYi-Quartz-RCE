@@ -4,7 +4,7 @@
 
 **Vulnerability Name:** RuoYi OA System Quartz Remote Code Execution (RCE)  
 **Affected Version:** RuoYi Management System v4.8.2 and below  
-**CVE ID:** (Pending assignment)  
+**CVE ID:** CVE-2026-4564  
 **Severity:** Critical (CVSS 3.1: 9.8)  
 **Vendor:** RuoYi (若依)  
 **Vendor URL:** https://github.com/yangzongzhuan/RuoYi  
